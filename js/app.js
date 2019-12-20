@@ -21,15 +21,21 @@ Gallery.prototype.render = function () {
     $('div').fadeIn(1000);
 }
 
-function renderOptions() {
-    let seen = {};
-    let chosen = $('.filter')
-    $(chosen).empty();
-    Gallery.all.forEach(animal => {
+$(document).ready(function () {
+    let rand = Math.ceil(Math.random() * 2)
+    renderData(rand);
+});
 
-        if (!seen[animal.keyword]) {
-            $(chosen).append(`<option value ="${animal.keyword}">${animal.keyword}</option>`);
-            seen[animal.keyword] = true;
+function renderOptions() {
+    let seen = [];
+    $('.filter').html('');
+
+    Gallery.all.forEach(animal => {
+        for (let i = -1; i < seen.length; i++) {
+            if (seen[i] != animal.keyword) {
+                $('.filter').append(`<option value ="${animal.keyword}">${animal.keyword}</option>`);
+                seen[i] = animal.keyword;
+            }
         }
     });
 }
@@ -83,28 +89,30 @@ function numberSort() {
 $('.filter').on('change', function () {
     let chosen = $(this).val();
     $('div').hide();
-    $(`#${chosen}`).fadeIn(1000);
+    $(`.${chosen}`).fadeIn(1000);
 });
 
 $('button').click(function () {
-    let pageNum = $('button').attr('id');
-    renderData(pageNum)
+    let num = $(this).attr('id');
+    renderData(num);
 });
 
-function renderData(pageNum) {
+function renderData(number) {
     $('#photo-template').html('');
     Gallery.all = [];
-    $.get(`../data/page-${pageNum}.json`)
-        .then(data => {
-            data.forEach(object => {
-                let singleAnimal = new Gallery(object);
-                singleAnimal.render();
-            });
-        })
-        .then(() => renderOptions())
-        .then(() => renderSortsTypes())
+    $.getJSON(`../data/page-${number}.json`, function (data) {
+        $.each(data, function (key, val) {
+            let single = new Gallery(val);
+            single.render()
+        });
+        renderOptions()
+        renderSortsTypes()
+    });
 }
 
-$(document).ready(function () {
-    renderData(1)
+$('#photo-template').click(function (event) {
+    event.preventDefault();
+    $('div').on('click', function () {
+        $(this).css({ 'height': '500px', 'position': 'fixed', 'top': '50%', 'left': '50%', 'transform': 'translate(-50%,-50%)', 'z-index': '33' });
+    });
 });

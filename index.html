@@ -9,13 +9,15 @@
         href="https://fonts.googleapis.com/css?family=Abril+Fatface|Acme|Amatic+SC|Dancing+Script|Indie+Flower|Lobster|Modak|Pacifico|Patrick+Hand|Righteous|Yellowtail|ZCOOL+XiaoWei&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+
     <script id="horns-template" type="text/x-handlebars-template">
-        <div id="{{keyword}}">
-            <h2>{{title}}</h2>
-            <img src="{{image_url}}" alt="{{title}}">
+        <div class="card {{keyword}}">
+            <img id="{{keyword}}" src="{{image_url}}" alt="{{title}}">
+            <h2>{{title}} <br> View Details</h2>
             <p>{{description}}</p>
         </div>
     </script>
+
 </head>
 
 <body>
@@ -42,6 +44,7 @@
         <section id="photo-template">
 
         </section>
+        <button>CLOSE</button>
     </main>
     <footer>
         &copy; 2018 Code Fellows
